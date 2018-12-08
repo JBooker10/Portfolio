@@ -25,12 +25,13 @@ WORKDIR /root
 
 COPY --from=builder /go/src/app/main .
 
+# expose port
+EXPOSE 8080
 
 # run main.go
 CMD ["./main"]
 
-# expose port
-EXPOSE 8080
+
 
 
 

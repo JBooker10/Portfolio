@@ -22,7 +22,7 @@ type Contact struct {
 }
 
 func contactEmailHandler(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 	var contact Contact
 	_ = json.NewDecoder(r.Body).Decode(&contact)
@@ -54,6 +54,11 @@ func IndexHandler(entrypoint string) func(w http.ResponseWriter, r *http.Request
 	return http.HandlerFunc(fn)
 }
 
+func home(w http.ResponseWriter, r *http.Request) {
+	response := time.Now().String()
+	fmt.Fprintln(w, response)
+}
+
 func main() {
 
 	port := flag.String("port", "8080", "the port application is listening on")
@@ -63,6 +68,7 @@ func main() {
 	r := mux.NewRouter()
 	api := r.PathPrefix("/api/").Subrouter()
 	api.HandleFunc("/contact", contactEmailHandler).Methods("POST")
+	api.HandleFunc("/home", home).Methods("GET")
 	// Static assets directly.
 	// r.PathPrefix("/static").Handler(http.FileServer(http.Dir(*staticAssets)))
 	// JavaScript application  entry-point
@@ -74,5 +80,6 @@ func main() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+	fmt.Println("Server starting on")
 	log.Fatal(srv.ListenAndServe())
 }

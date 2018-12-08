@@ -5,7 +5,7 @@ services:
     restart: always
     build: .
     ports:
-      - "4000:8080"
+      - "8080:8080"
     links:
       - front_end
     env_file:
@@ -14,19 +14,4 @@ services:
     container_name: vue-portfolio
     image: jbooker10/vue-app-container
     ports:
-      - "4001:80"
-# version: "3"
-# services:
-#  rest_api:
-#     container_name: go-portfolio-api
-#     image: jbooker10/go-portfolio-api
-#     ports:
-#       - "4000:8080"
-#   app:
-#     container_name: node-portfolio-app
-#     restart: always
-#     build: .
-#     ports:
-#       - "3000:3000"
-#     links:
-#       - rest_api
+      - "80:80"
