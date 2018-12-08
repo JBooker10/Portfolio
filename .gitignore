@@ -1,5 +1,5 @@
 .env
 /client
-/src/vendor
+/vendor
 portfolio
 api.env
