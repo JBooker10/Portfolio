@@ -9,8 +9,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"gopkg.in/gomail.v2"
+	gomail "gopkg.in/gomail.v2"
 )
 
 type Contact struct {
@@ -22,8 +23,9 @@ type Contact struct {
 }
 
 func contactEmailHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json")
+	header := w.Header()
+	header.Add("Access-Control-Allow-Origin", "*")
+	header.Add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
 	var contact Contact
 	_ = json.NewDecoder(r.Body).Decode(&contact)
 
@@ -75,11 +77,11 @@ func main() {
 	// r.PathPrefix("/").HandlerFunc(IndexHandler(*app))
 
 	srv := &http.Server{
-		Handler:      r,
-		Addr:         "127.0.0.1:" + *port,
+		Handler:      handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(r),
+		Addr:         "0.0.0.0:" + *port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
-	fmt.Println("Server starting on")
+	fmt.Printf("Server started on %s", *port)
 	log.Fatal(srv.ListenAndServe())
 }
