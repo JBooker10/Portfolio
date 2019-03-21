@@ -3,3 +3,4 @@
 /vendor
 portfolio
 api.env
+/nginx_config
