@@ -3,3 +3,5 @@
 /vendor
 portfolio
 api.env
+/nginx_config
+/init-letsencrypt.sh
