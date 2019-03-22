@@ -4,4 +4,4 @@
 portfolio
 api.env
 /nginx_config
-/init-letsencrypt.sh
+init-letsencrypt.sh
